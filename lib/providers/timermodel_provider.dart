@@ -55,8 +55,11 @@ class TimerModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void startCountdown() {
-    _isTimerRunning = !_isTimerRunning;
+  void startCountdown({bool? reloop = false}) {
+    if(!reloop!) {
+      print('relo');
+      _isTimerRunning = !_isTimerRunning;
+    }
     if (_timer?.isActive == true) {
       pauseCountdown();
       notifyListeners();
@@ -97,12 +100,11 @@ class TimerModel with ChangeNotifier {
     _countdownValue = _timeInitialized;
     notifyListeners();
     Future.delayed(const Duration(milliseconds: 200), () {
-      startCountdown();
+      startCountdown(reloop: _isTimerRunning);
     });
   }
 
   void resetCountdown() {
-    print('123');
     pauseCountdown();
     _countdownValue = _timeBreak;
     _warningBackground = false;
