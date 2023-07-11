@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_billiard/providers/setting_provider.dart';
-import 'package:flutter_billiard/providers/timermodel_provider.dart';
-import 'package:flutter_billiard/screens/home_screen.dart';
-import 'package:flutter_billiard/screens/setting_screen.dart';
+import 'package:billiards_countdown/providers/setting_provider.dart';
+import 'package:billiards_countdown/providers/timermodel_provider.dart';
+import 'package:billiards_countdown/screens/home_screen.dart';
+import 'package:billiards_countdown/screens/setting_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -34,5 +34,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

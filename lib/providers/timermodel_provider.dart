@@ -11,6 +11,9 @@ class TimerModel with ChangeNotifier {
   int _timeExtension = 30;
   int _timeNotifi = 5;
 
+  int _pointOne = 0;
+  int _pointTwo = 0;
+
   int _countdownValue = 60;
   Timer? _timer;
   bool _isTimerRunning = false;
@@ -23,6 +26,9 @@ class TimerModel with ChangeNotifier {
   bool get isExtension => _isExtension;
   bool get isBreak => _isBreak;
   bool get warningBackground => _warningBackground;
+
+  int get pointOne => _pointOne;
+  int get pointTwo => _pointTwo;
 
   void playSound({bool? end = false}) async {
     await player.setSource(
@@ -56,7 +62,7 @@ class TimerModel with ChangeNotifier {
   }
 
   void startCountdown({bool? reloop = false}) {
-    if(!reloop!) {
+    if (!reloop!) {
       print('relo');
       _isTimerRunning = !_isTimerRunning;
     }
@@ -71,7 +77,7 @@ class TimerModel with ChangeNotifier {
         if (_countdownValue > 0) {
           if (count % 2 == 0) {
             _countdownValue--;
-            if(_countdownValue <= _timeNotifi) {
+            if (_countdownValue <= _timeNotifi) {
               playSound(end: _countdownValue == 0);
             }
           }
@@ -123,5 +129,41 @@ class TimerModel with ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 200), () {
       startCountdown();
     });
+  }
+
+  void increasePoint(int? type) {
+    switch (type) {
+      case 1:
+        if (_pointOne == 9) {
+          _pointOne = 0;
+        } else {
+          _pointOne += 1;
+        }
+        break;
+      case 2:
+        if (_pointTwo == 9) {
+          _pointTwo = 0;
+        } else {
+          _pointTwo += 1;
+        }
+        break;
+      default:
+    }
+    notifyListeners();
+  }
+
+  void decreasePoint(int? type) {
+    switch (type) {
+      case 1:
+        if (_pointOne == 0) return;
+        _pointOne -= 1;
+        break;
+      case 2:
+        if (_pointTwo == 0) return;
+        _pointTwo -= 1;
+        break;
+      default:
+    }
+    notifyListeners();
   }
 }

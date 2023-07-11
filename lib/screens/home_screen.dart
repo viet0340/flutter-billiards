@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_billiard/providers/timermodel_provider.dart';
-import 'package:flutter_billiard/widgets/button_widget.dart';
+import 'package:billiards_countdown/providers/timermodel_provider.dart';
+import 'package:billiards_countdown/widgets/button_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final timerModel = Provider.of<TimerModel>(context);
     final countdownValue = timerModel.countdownValue;
+    final pointOne = timerModel.pointOne;
+    final pointTwo = timerModel.pointTwo;
     final isTimerRunning = timerModel.isTimerRunning;
     final isExtension = timerModel.isExtension;
     final isBreak = timerModel.isBreak;
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: FractionallySizedBox(
                       child: Container(
+                        margin: const EdgeInsets.only(bottom: 50),
                         color: Colors.transparent,
                         child: Center(
                           child: _formatTime(countdownValue),
@@ -43,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                        margin: const EdgeInsets.only(top: 40, right: 30),
+                        margin: const EdgeInsets.only(top: 40, left: 10),
                         child: IconButton(
                             onPressed: () {
                               // Navigator.pushNamed(context, '/settings');
@@ -74,6 +77,75 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icons.more_time_rounded,
                               size: 50,
                             ))),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: 50, left: 30),
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  timerModel.decreasePoint(1);
+                                },
+                                color: Colors.white,
+                                icon: const Icon(
+                                    Icons.keyboard_double_arrow_left)),
+                            IconButton(
+                                onPressed: () {},
+                                color: Colors.white,
+                                iconSize: 35,
+                                icon: Text(
+                                  '$pointOne',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  timerModel.increasePoint(1);
+                                },
+                                color: Colors.white,
+                                icon: const Icon(
+                                    Icons.keyboard_double_arrow_right))
+                          ],
+                        )),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                        margin: const EdgeInsets.only(bottom: 50, right: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  timerModel.decreasePoint(2);
+                                },
+                                color: Colors.white,
+                                icon: const Icon(
+                                    Icons.keyboard_double_arrow_left)),
+                            IconButton(
+                                onPressed: () {},
+                                color: Colors.white,
+                                iconSize: 35,
+                                icon: Text(
+                                  '$pointTwo',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  timerModel.increasePoint(2);
+                                },
+                                color: Colors.white,
+                                icon: const Icon(
+                                    Icons.keyboard_double_arrow_right))
+                          ],
+                        )),
                   ),
                 ],
               ),
