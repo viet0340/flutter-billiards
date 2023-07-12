@@ -181,6 +181,9 @@ class TimerModel with ChangeNotifier {
         break;
       case 'break':
         _timeBreak = time;
+        if(isBreak == false) {
+          _countdownValue = time;
+        }
         break;
       default:
     }

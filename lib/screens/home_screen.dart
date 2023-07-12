@@ -49,6 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         margin: const EdgeInsets.only(top: 40, left: 10),
                         child: IconButton(
                             onPressed: () {
+                              if(isTimerRunning) {
+                                timerModel.startCountdown();
+                              }
                               Navigator.pushNamed(context, '/settings');
                             },
                             color: Colors.white,
