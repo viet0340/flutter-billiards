@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         margin: const EdgeInsets.only(top: 40, left: 10),
                         child: IconButton(
                             onPressed: () {
-                              // Navigator.pushNamed(context, '/settings');
+                              Navigator.pushNamed(context, '/settings');
                             },
                             color: Colors.white,
                             icon: const Icon(Icons.settings))),

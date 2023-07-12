@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:billiards_countdown/providers/setting_provider.dart';
 import 'package:billiards_countdown/providers/timermodel_provider.dart';
 import 'package:billiards_countdown/screens/home_screen.dart';
 import 'package:billiards_countdown/screens/setting_screen.dart';
@@ -11,7 +10,6 @@ void main() {
     /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Setting()),
         ChangeNotifierProvider(create: (_) => TimerModel()),
       ],
       child: const MyApp(),
@@ -25,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {

@@ -1,4 +1,6 @@
+import 'package:billiards_countdown/providers/timermodel_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -10,8 +12,29 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _controllerTimeInitialized =
+      TextEditingController();
+  final TextEditingController _controllerTimeBreak = TextEditingController();
+  final TextEditingController _controllerTimeExtension =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    final timerModel = Provider.of<TimerModel>(context, listen: false);
+    final timeInitialized = timerModel.timeInitialized;
+    final timeBreak = timerModel.timeBreak;
+    final timeExtension = timerModel.timeExtension;
+
+    _controllerTimeInitialized.text = timeInitialized.toString();
+    _controllerTimeBreak.text = timeBreak.toString();
+    _controllerTimeExtension.text = timeExtension.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final timerModel = Provider.of<TimerModel>(context, listen: false);
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -23,6 +46,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: TextFormField(
+                  controller: _controllerTimeInitialized,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Time Loop',
@@ -30,9 +54,10 @@ class _SettingScreenState extends State<SettingScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
                   ),
+                  onChanged: (value) {
+                    timerModel.changeTime(time: int.parse(value), type: 'initialized');
+                  },
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter time loop';
@@ -44,27 +69,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Time Notifi',
-                    prefixIcon: const Icon(Icons.timer),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter time notifi';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: TextFormField(
+                  controller: _controllerTimeBreak,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Time Break',
@@ -72,9 +77,10 @@ class _SettingScreenState extends State<SettingScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
                   ),
+                  onChanged: (value) {
+                    timerModel.changeTime(time: int.parse(value), type: 'break');
+                  },
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter time break';
@@ -86,6 +92,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: TextFormField(
+                  controller: _controllerTimeExtension,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Time Extension',
@@ -93,11 +100,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
                   ),
                   onChanged: (value) {
-                    print(value);
+                    timerModel.changeTime(time: int.parse(value), type: 'extension');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -112,22 +117,10 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ButtonBar(
           alignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                }
-              },
-              child: Text('Save'),
-            ),
             OutlinedButton(
               // style: ButtonStyle(backgroundColor: MaterialStateColor.),
               onPressed: () {

@@ -30,6 +30,10 @@ class TimerModel with ChangeNotifier {
   int get pointOne => _pointOne;
   int get pointTwo => _pointTwo;
 
+  int get timeInitialized => _timeInitialized;
+  int get timeBreak => _timeBreak;
+  int get timeExtension => _timeExtension;
+
   void playSound({bool? end = false}) async {
     await player.setSource(
         AssetSource(end == true ? 'audio/end.wav' : 'audio/beep.wav'));
@@ -63,7 +67,6 @@ class TimerModel with ChangeNotifier {
 
   void startCountdown({bool? reloop = false}) {
     if (!reloop!) {
-      print('relo');
       _isTimerRunning = !_isTimerRunning;
     }
     if (_timer?.isActive == true) {
@@ -104,6 +107,7 @@ class TimerModel with ChangeNotifier {
     pauseCountdown();
     _warningBackground = false;
     _countdownValue = _timeInitialized;
+    _isExtension = false;
     notifyListeners();
     Future.delayed(const Duration(milliseconds: 200), () {
       startCountdown(reloop: _isTimerRunning);
@@ -166,4 +170,21 @@ class TimerModel with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void changeTime({int time = 0, String? type}) {
+    switch (type) {
+      case 'initialized':
+        _timeInitialized = time;
+        break;
+      case 'extension':
+        _timeExtension = time;
+        break;
+      case 'break':
+        _timeBreak = time;
+        break;
+      default:
+    }
+    notifyListeners();
+  }
+
 }
