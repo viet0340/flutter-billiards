@@ -22,7 +22,28 @@ class _HomeScreenState extends State<HomeScreen> {
     final isBreak = timerModel.isBreak;
     final warningBackground = timerModel.warningBackground;
 
-    return Scaffold(
+    return GestureDetector(
+        onVerticalDragEnd: (DragEndDetails details) {
+          if (isBreak) {
+            
+            if (details.velocity.pixelsPerSecond.dy < 0) {
+              timerModel.reloopCountdown();
+            } else {
+              timerModel.startCountdown();
+            }
+          }
+        },
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (!isBreak && details.velocity.pixelsPerSecond.dx > 0) {
+            timerModel.extensionCountdown();
+          }
+          if (!isExtension &&
+              isTimerRunning &&
+              details.velocity.pixelsPerSecond.dx < 0) {
+            timerModel.breakCountdown();
+          }
+        },
+        child: Scaffold(
       backgroundColor: warningBackground ? Colors.red : Colors.black,
       body: Column(
         children: [
@@ -236,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Text _formatTime(int time) {
