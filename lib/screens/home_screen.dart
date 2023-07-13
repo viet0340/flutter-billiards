@@ -22,33 +22,32 @@ class _HomeScreenState extends State<HomeScreen> {
     final isBreak = timerModel.isBreak;
     final warningBackground = timerModel.warningBackground;
 
-    return Scaffold(
-      backgroundColor: warningBackground ? Colors.red : Colors.black,
-      body: Column(
-        children: [
-          Expanded(
-            flex: 8,
-            child: GestureDetector(
-                onTap: () {
-                  timerModel.startCountdown();
-                },
-                onVerticalDragEnd: (DragEndDetails details) {
-                  if (isBreak) {
-                    if (details.velocity.pixelsPerSecond.dy < 0) {
-                      timerModel.reloopCountdown();
-                    }
-                  }
-                },
-                onHorizontalDragEnd: (DragEndDetails details) {
-                  if (!isExtension &&
-                      isTimerRunning &&
-                      details.velocity.pixelsPerSecond.dx > 0) {
-                    timerModel.extensionCountdown();
-                  }
-                  if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
-                    timerModel.breakCountdown();
-                  }
-                },
+    return GestureDetector(
+        onVerticalDragEnd: (DragEndDetails details) {
+          if (isBreak) {
+            if (details.velocity.pixelsPerSecond.dy < 0) {
+              timerModel.reloopCountdown();
+            } else {
+              timerModel.startCountdown();
+            }
+          }
+        },
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (!isBreak && details.velocity.pixelsPerSecond.dx > 0) {
+            timerModel.breakCountdown();
+          }
+          if (!isExtension &&
+              isTimerRunning &&
+              details.velocity.pixelsPerSecond.dx < 0) {
+            timerModel.extensionCountdown();
+          }
+        },
+        child: Scaffold(
+          backgroundColor: warningBackground ? Colors.red : Colors.black,
+          body: Column(
+            children: [
+              Expanded(
+                flex: 8,
                 child: Container(
                   color: Colors.transparent,
                   child: Stack(
@@ -175,91 +174,96 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                )),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                    top: BorderSide(width: 0, color: Colors.transparent)),
+                ),
               ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CustomButton(
-                          onPressed: (countdownValue == 0 || !isBreak)
-                              ? null
-                              : timerModel.startCountdown,
-                          styleButton: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.disabled)) {
-                                  return Colors.grey;
-                                }
-                                return Colors.green;
-                              },
-                            ),
-                          ),
-                          child: Icon(
-                            isTimerRunning ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 80,
-                          ),
-                        ),
-                        CustomButton(
-                          onPressed:
-                              !isBreak ? null : timerModel.reloopCountdown,
-                          onLongPress:
-                              !isBreak ? null : timerModel.resetCountdown,
-                          styleButton: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.disabled)) {
-                                  return Colors.grey;
-                                }
-                                return Colors.blue;
-                              },
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.repeat_rounded,
-                            color: Colors.white,
-                            size: 80,
-                          ),
-                        ),
-                        CustomButton(
-                          onPressed: isBreak ? null : timerModel.breakCountdown,
-                          styleButton: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.disabled)) {
-                                  return Colors.grey;
-                                }
-                                return const Color.fromARGB(255, 72, 51, 94);
-                              },
-                            ),
-                          ),
-                          child: const Text(
-                            'Break',
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ),
-                      ],
-                    ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                        top: BorderSide(width: 0, color: Colors.transparent)),
                   ),
-                ],
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            CustomButton(
+                              onPressed: (countdownValue == 0 || !isBreak)
+                                  ? null
+                                  : timerModel.startCountdown,
+                              styleButton: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.disabled)) {
+                                      return Colors.grey;
+                                    }
+                                    return Colors.green;
+                                  },
+                                ),
+                              ),
+                              child: Icon(
+                                isTimerRunning ? Icons.pause : Icons.play_arrow,
+                                color: Colors.white,
+                                size: 80,
+                              ),
+                            ),
+                            CustomButton(
+                              onPressed:
+                                  !isBreak ? null : timerModel.reloopCountdown,
+                              onLongPress:
+                                  !isBreak ? null : timerModel.resetCountdown,
+                              styleButton: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.disabled)) {
+                                      return Colors.grey;
+                                    }
+                                    return Colors.blue;
+                                  },
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.repeat_rounded,
+                                color: Colors.white,
+                                size: 80,
+                              ),
+                            ),
+                            CustomButton(
+                              onPressed:
+                                  isBreak ? null : timerModel.breakCountdown,
+                              styleButton: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.disabled)) {
+                                      return Colors.grey;
+                                    }
+                                    return const Color.fromARGB(
+                                        255, 72, 51, 94);
+                                  },
+                                ),
+                              ),
+                              child: const Text(
+                                'Break',
+                                style: TextStyle(fontSize: 25),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Text _formatTime(int time) {
