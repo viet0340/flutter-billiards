@@ -36,10 +36,21 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final timerModel = Provider.of<TimerModel>(context, listen: false);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.black87,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -114,24 +125,6 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ButtonBar(
-          alignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
-              // style: ButtonStyle(backgroundColor: MaterialStateColor.),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Back',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
         ),
       ),
     );

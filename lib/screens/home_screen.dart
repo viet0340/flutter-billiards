@@ -22,158 +22,160 @@ class _HomeScreenState extends State<HomeScreen> {
     final isBreak = timerModel.isBreak;
     final warningBackground = timerModel.warningBackground;
 
-    return GestureDetector(
-        onVerticalDragEnd: (DragEndDetails details) {
-          if (isBreak) {
-            
-            if (details.velocity.pixelsPerSecond.dy < 0) {
-              timerModel.reloopCountdown();
-            } else {
-              timerModel.startCountdown();
-            }
-          }
-        },
-        onHorizontalDragEnd: (DragEndDetails details) {
-          if (!isBreak && details.velocity.pixelsPerSecond.dx > 0) {
-            timerModel.extensionCountdown();
-          }
-          if (!isExtension &&
-              isTimerRunning &&
-              details.velocity.pixelsPerSecond.dx < 0) {
-            timerModel.breakCountdown();
-          }
-        },
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: warningBackground ? Colors.red : Colors.black,
       body: Column(
         children: [
           Expanded(
             flex: 8,
-            child: Container(
-              color: Colors.transparent,
-              child: Stack(
-                children: [
-                  Center(
-                    child: FractionallySizedBox(
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 50),
-                        color: Colors.transparent,
-                        child: Center(
-                          child: _formatTime(countdownValue),
+            child: GestureDetector(
+                onTap: () {
+                  timerModel.startCountdown();
+                },
+                onVerticalDragEnd: (DragEndDetails details) {
+                  if (isBreak) {
+                    if (details.velocity.pixelsPerSecond.dy < 0) {
+                      timerModel.reloopCountdown();
+                    }
+                  }
+                },
+                onHorizontalDragEnd: (DragEndDetails details) {
+                  if (!isExtension &&
+                      isTimerRunning &&
+                      details.velocity.pixelsPerSecond.dx > 0) {
+                    timerModel.extensionCountdown();
+                  }
+                  if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
+                    timerModel.breakCountdown();
+                  }
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: FractionallySizedBox(
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 50),
+                            color: Colors.transparent,
+                            child: Center(
+                              child: _formatTime(countdownValue),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 40, left: 10),
-                        child: IconButton(
-                            onPressed: () {
-                              if(isTimerRunning) {
-                                timerModel.startCountdown();
-                              }
-                              Navigator.pushNamed(context, '/settings');
-                            },
-                            color: Colors.white,
-                            icon: const Icon(Icons.settings))),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                        margin: const EdgeInsets.only(top: 40, right: 10),
-                        child: ElevatedButton(
-                            onPressed: !isExtension && isTimerRunning
-                                ? timerModel.extensionCountdown
-                                : null,
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.disabled)) {
-                                    return Colors.grey;
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 40, left: 10),
+                            child: IconButton(
+                                onPressed: () {
+                                  if (isTimerRunning) {
+                                    timerModel.startCountdown();
                                   }
-                                  return Colors.green;
+                                  Navigator.pushNamed(context, '/settings');
                                 },
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.more_time_rounded,
-                              size: 50,
-                            ))),
+                                color: Colors.white,
+                                icon: const Icon(Icons.settings))),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 40, right: 10),
+                            child: ElevatedButton(
+                                onPressed: !isExtension && isTimerRunning
+                                    ? timerModel.extensionCountdown
+                                    : null,
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.disabled)) {
+                                        return Colors.grey;
+                                      }
+                                      return Colors.green;
+                                    },
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.more_time_rounded,
+                                  size: 50,
+                                ))),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                            margin: const EdgeInsets.only(bottom: 50, left: 30),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      timerModel.decreasePoint(1);
+                                    },
+                                    color: Colors.white,
+                                    icon: const Icon(
+                                        Icons.keyboard_double_arrow_left)),
+                                IconButton(
+                                    onPressed: () {},
+                                    color: Colors.white,
+                                    iconSize: 35,
+                                    icon: Text(
+                                      '$pointOne',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      timerModel.increasePoint(1);
+                                    },
+                                    color: Colors.white,
+                                    icon: const Icon(
+                                        Icons.keyboard_double_arrow_right))
+                              ],
+                            )),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                            margin:
+                                const EdgeInsets.only(bottom: 50, right: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      timerModel.decreasePoint(2);
+                                    },
+                                    color: Colors.white,
+                                    icon: const Icon(
+                                        Icons.keyboard_double_arrow_left)),
+                                IconButton(
+                                    onPressed: () {},
+                                    color: Colors.white,
+                                    iconSize: 35,
+                                    icon: Text(
+                                      '$pointTwo',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      timerModel.increasePoint(2);
+                                    },
+                                    color: Colors.white,
+                                    icon: const Icon(
+                                        Icons.keyboard_double_arrow_right))
+                              ],
+                            )),
+                      ),
+                    ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Container(
-                        margin: const EdgeInsets.only(bottom: 50, left: 30),
-                        child: Row(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  timerModel.decreasePoint(1);
-                                },
-                                color: Colors.white,
-                                icon: const Icon(
-                                    Icons.keyboard_double_arrow_left)),
-                            IconButton(
-                                onPressed: () {},
-                                color: Colors.white,
-                                iconSize: 35,
-                                icon: Text(
-                                  '$pointOne',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 35,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                            IconButton(
-                                onPressed: () {
-                                  timerModel.increasePoint(1);
-                                },
-                                color: Colors.white,
-                                icon: const Icon(
-                                    Icons.keyboard_double_arrow_right))
-                          ],
-                        )),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                        margin: const EdgeInsets.only(bottom: 50, right: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  timerModel.decreasePoint(2);
-                                },
-                                color: Colors.white,
-                                icon: const Icon(
-                                    Icons.keyboard_double_arrow_left)),
-                            IconButton(
-                                onPressed: () {},
-                                color: Colors.white,
-                                iconSize: 35,
-                                icon: Text(
-                                  '$pointTwo',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 35,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                            IconButton(
-                                onPressed: () {
-                                  timerModel.increasePoint(2);
-                                },
-                                color: Colors.white,
-                                icon: const Icon(
-                                    Icons.keyboard_double_arrow_right))
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-            ),
+                )),
           ),
           Expanded(
             flex: 2,
@@ -257,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    ));
+    );
   }
 
   Text _formatTime(int time) {
