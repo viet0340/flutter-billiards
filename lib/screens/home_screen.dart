@@ -37,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (isBreak) {
                   if (details.velocity.pixelsPerSecond.dy < 0) {
                     timerModel.reloopCountdown();
-                  } else {
-                    timerModel.resetCountdown();
+                  } else if (!isExtension && isTimerRunning) {
+                    timerModel.extensionCountdown();
                   }
                 }
               },
@@ -46,10 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
                   timerModel.breakCountdown();
                 }
-                if (!isExtension &&
-                    isTimerRunning &&
-                    details.velocity.pixelsPerSecond.dx > 0) {
-                  timerModel.extensionCountdown();
+                if (!isBreak && details.velocity.pixelsPerSecond.dx > 0) {
+                  timerModel.resetCountdown();
                 }
               },
               child: Container(
