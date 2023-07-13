@@ -26,30 +26,32 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: warningBackground ? Colors.red : Colors.black,
       body: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              timerModel.startCountdown();
-            },
-            onLongPress: () => timerModel.resetCountdown(),
-            onVerticalDragEnd: (DragEndDetails details) {
-              if (isBreak) {
-                if (details.velocity.pixelsPerSecond.dy < 0) {
-                  timerModel.reloopCountdown();
+          Expanded(
+            flex: 8,
+            child: GestureDetector(
+              onTap: () {
+                timerModel.startCountdown();
+              },
+              onLongPress: () => timerModel.resetCountdown(),
+              onVerticalDragEnd: (DragEndDetails details) {
+                if (isBreak) {
+                  if (details.velocity.pixelsPerSecond.dy < 0) {
+                    timerModel.reloopCountdown();
+                  } else {
+                    timerModel.resetCountdown();
+                  }
                 }
-              }
-            },
-            onHorizontalDragEnd: (DragEndDetails details) {
-              if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
-                timerModel.breakCountdown();
-              }
-              if (!isExtension &&
-                  isTimerRunning &&
-                  details.velocity.pixelsPerSecond.dx > 0) {
-                timerModel.extensionCountdown();
-              }
-            },
-            child: Expanded(
-              flex: 8,
+              },
+              onHorizontalDragEnd: (DragEndDetails details) {
+                if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
+                  timerModel.breakCountdown();
+                }
+                if (!isExtension &&
+                    isTimerRunning &&
+                    details.velocity.pixelsPerSecond.dx > 0) {
+                  timerModel.extensionCountdown();
+                }
+              },
               child: Container(
                 color: Colors.transparent,
                 child: Stack(
