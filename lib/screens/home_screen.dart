@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (!isBreak && details.velocity.pixelsPerSecond.dx < 0) {
                   timerModel.breakCountdown();
                 }
-                if (!isBreak && details.velocity.pixelsPerSecond.dx > 0) {
+                if (isBreak && details.velocity.pixelsPerSecond.dx > 0) {
                   timerModel.resetCountdown();
                 }
               },
