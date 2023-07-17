@@ -67,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: int.parse(value), type: 'initialized');
+                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'initialized');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -90,7 +90,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: int.parse(value), type: 'break');
+                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'break');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -113,7 +113,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: int.parse(value), type: 'extension');
+                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'extension');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {

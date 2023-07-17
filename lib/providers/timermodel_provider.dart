@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimerModel with ChangeNotifier {
   final player = AudioPlayer();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   int _timeInitialized = 30;
   int _timeBreak = 60;
@@ -34,6 +36,13 @@ class TimerModel with ChangeNotifier {
   int get timeBreak => _timeBreak;
   int get timeExtension => _timeExtension;
 
+  Future<void> initValues() async {
+    final SharedPreferences prefs = await _prefs;
+    _timeInitialized = prefs.getInt('initialized') ?? 30;
+    _timeBreak = prefs.getInt('break') ?? 60;
+    _timeExtension = prefs.getInt('extension') ?? 30;
+  }
+
   void playSound({bool? end = false}) async {
     await player.setSource(
         AssetSource(end == true ? 'audio/end.wav' : 'audio/beep.wav'));
@@ -62,6 +71,7 @@ class TimerModel with ChangeNotifier {
   void extensionCountdown() {
     _countdownValue += _timeExtension;
     _isExtension = true;
+    _warningBackground = false;
     notifyListeners();
   }
 
@@ -171,23 +181,26 @@ class TimerModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeTime({int time = 0, String? type}) {
+  Future<void> changeTime({int time = 0, String? type}) async {
+    final SharedPreferences prefs = await _prefs;
     switch (type) {
       case 'initialized':
         _timeInitialized = time;
+        await prefs.setInt('initialized', time);
         break;
       case 'extension':
         _timeExtension = time;
+        await prefs.setInt('extension', time);
         break;
       case 'break':
         _timeBreak = time;
-        if(isBreak == false) {
+        if (isBreak == false) {
           _countdownValue = time;
         }
+        await prefs.setInt('break', time);
         break;
       default:
     }
     notifyListeners();
   }
-
 }

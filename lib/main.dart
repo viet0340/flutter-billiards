@@ -4,13 +4,17 @@ import 'package:billiards_countdown/screens/home_screen.dart';
 import 'package:billiards_countdown/screens/setting_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  TimerModel timerModel = TimerModel();
+  await timerModel.initValues();
   runApp(
     /// Providers are above [MyApp] instead of inside it, so that tests
     /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TimerModel()),
+        ChangeNotifierProvider.value(value: timerModel),
       ],
       child: const MyApp(),
     ),
