@@ -93,19 +93,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                   margin:
                                       const EdgeInsets.only(top: 40, right: 10),
-                                  child: ElevatedButton(
+                                  child: OutlinedButton(
                                       onPressed: !isExtension && isTimerRunning
                                           ? timerModel.extensionCountdown
                                           : null,
                                       style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty
+                                        iconColor: MaterialStateProperty
                                             .resolveWith<Color>(
                                           (Set<MaterialState> states) {
                                             if (states.contains(
                                                 MaterialState.disabled)) {
                                               return Colors.grey;
                                             }
-                                            return Colors.green;
+                                            return Colors.white;
                                           },
                                         ),
                                       ),
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           icon: const Icon(Icons
                                               .keyboard_double_arrow_left)),
                                       IconButton(
-                                          onPressed: () {},
+                                          onPressed: null,
                                           color: Colors.white,
                                           iconSize: 35,
                                           icon: Text(
@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           icon: const Icon(Icons
                                               .keyboard_double_arrow_left)),
                                       IconButton(
-                                          onPressed: () {},
+                                          onPressed: null,
                                           color: Colors.white,
                                           iconSize: 35,
                                           icon: Text(
@@ -215,7 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .contains(MaterialState.disabled)) {
                                           return Colors.grey;
                                         }
-                                        return Colors.green;
+                                        return isTimerRunning
+                                            ? Colors.green
+                                            : const Color.fromARGB(
+                                                255, 182, 124, 0);
                                       },
                                     ),
                                   ),

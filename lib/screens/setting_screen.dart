@@ -36,12 +36,13 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final timerModel = Provider.of<TimerModel>(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          color: Colors.black87,
+          color: Colors.white,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -59,15 +60,31 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: TextFormField(
                   controller: _controllerTimeInitialized,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Time Loop',
-                    prefixIcon: const Icon(Icons.timer),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Time Loop', // Đặt văn bản cho nhãn
+                    labelStyle:
+                        TextStyle(color: Colors.white), // Đặt màu chữ cho nhãn
+                    hintStyle: TextStyle(
+                        color: Colors.grey), // Đặt màu chữ cho văn bản gợi ý
+                    prefixIcon: Icon(Icons.person,
+                        color: Colors
+                            .white), // Đặt biểu tượng tiền tố và màu của nó
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors
+                              .blue), // Đặt màu viền khi trường được kích hoạt
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors
+                              .blue), // Đặt màu viền khi trường được tập trung
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'initialized');
+                    timerModel.changeTime(
+                        time: value.isEmpty ? 0 : int.parse(value),
+                        type: 'initialized');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -82,15 +99,23 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: TextFormField(
                   controller: _controllerTimeBreak,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                     labelText: 'Time Break',
-                    prefixIcon: const Icon(Icons.timer),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                    labelStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.grey),
+                    prefixIcon: Icon(Icons.person, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'break');
+                    timerModel.changeTime(
+                        time: value.isEmpty ? 0 : int.parse(value),
+                        type: 'break');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -105,15 +130,23 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: TextFormField(
                   controller: _controllerTimeExtension,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                     labelText: 'Time Extension',
-                    prefixIcon: const Icon(Icons.timer),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                    labelStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: Colors.grey),
+                    prefixIcon: Icon(Icons.person, color: Colors.white),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
                     ),
                   ),
                   onChanged: (value) {
-                    timerModel.changeTime(time: value.isEmpty ? 0 : int.parse(value), type: 'extension');
+                    timerModel.changeTime(
+                        time: value.isEmpty ? 0 : int.parse(value),
+                        type: 'extension');
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
