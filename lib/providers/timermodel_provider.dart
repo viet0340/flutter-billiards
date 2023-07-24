@@ -35,6 +35,7 @@ class TimerModel with ChangeNotifier {
   int get timeInitialized => _timeInitialized;
   int get timeBreak => _timeBreak;
   int get timeExtension => _timeExtension;
+  int get timeWarning => _timeNotifi;
 
   Future<void> initValues() async {
     final SharedPreferences prefs = await _prefs;
@@ -191,6 +192,10 @@ class TimerModel with ChangeNotifier {
       case 'extension':
         _timeExtension = time;
         await prefs.setInt('extension', time);
+        break;
+      case 'warning':
+        _timeNotifi = time;
+        await prefs.setInt('warning', time);
         break;
       case 'break':
         _timeBreak = time;

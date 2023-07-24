@@ -17,7 +17,8 @@ class _SettingScreenState extends State<SettingScreen> {
   final TextEditingController _controllerTimeBreak = TextEditingController();
   final TextEditingController _controllerTimeExtension =
       TextEditingController();
-  final FocusNode _focusNode = FocusNode();
+  final TextEditingController _controllerTimeWarning =
+      TextEditingController();
 
   @override
   void initState() {
@@ -27,10 +28,12 @@ class _SettingScreenState extends State<SettingScreen> {
     final timeInitialized = timerModel.timeInitialized;
     final timeBreak = timerModel.timeBreak;
     final timeExtension = timerModel.timeExtension;
+    final timeWarning = timerModel.timeWarning;
 
     _controllerTimeInitialized.text = timeInitialized.toString();
     _controllerTimeBreak.text = timeBreak.toString();
     _controllerTimeExtension.text = timeExtension.toString();
+    _controllerTimeWarning.text = timeWarning.toString();
   }
 
   @override
@@ -157,6 +160,37 @@ class _SettingScreenState extends State<SettingScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter time extension';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: TextFormField(
+                      controller: _controllerTimeWarning,
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        labelText: 'Time Warning',
+                        labelStyle: TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.grey),
+                        prefixIcon: Icon(Icons.person, color: Colors.white),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        timerModel.changeTime(
+                            time: value.isEmpty ? 0 : int.parse(value),
+                            type: 'warning');
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter time warning';
                         }
                         return null;
                       },
