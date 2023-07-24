@@ -42,6 +42,7 @@ class TimerModel with ChangeNotifier {
     _timeInitialized = prefs.getInt('initialized') ?? 30;
     _timeBreak = prefs.getInt('break') ?? 60;
     _timeExtension = prefs.getInt('extension') ?? 30;
+    _timeExtension = prefs.getInt('warning') ?? 5;
   }
 
   void playSound({bool? end = false}) async {
